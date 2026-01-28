@@ -1,0 +1,27 @@
+﻿﻿@using CatalogosMVC.Business.Models
+@model UserModel
+
+
+@{
+    ViewData["Title"] = "Adicionar Usuário";
+}
+
+
+<div class="container bg-dark p-5 rounded-5">
+
+    <div class="mb-5 text-center ">
+
+        <h1 class="text-light">Cadastro de Tarefas</h1>
+
+    </div>
+
+    <form method="post" asp-controller="Users" asp-action="CraeteUser">
+        <!--NOME-->
+        <div class="mb-3">
+            <label for="Name" class="form-label text-light">Tarefa:</label>
+            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Digite o nome do Usuário :">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+    </form>
+</div>

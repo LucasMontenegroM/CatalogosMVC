@@ -1,0 +1,14 @@
+﻿@using CatalogosMVC.Business.Models
+@model List<UserModel>
+
+<div>
+    <button type="button" class="btn btn-success btn-success btn-lg">Cadastrar novo Usuário</button>
+</div>
+
+<div>       
+    @foreach (var user in Model)
+    {    
+    <button type="button" class="btn btn-dark btn-lg">@user.Name</button>
+    }
+</div>
+

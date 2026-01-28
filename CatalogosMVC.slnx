@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <File Path=".gitignore" />
+    <Project Path="CatalogosMVC.Business/CatalogosMVC.Business.csproj" />
+    <Project Path="CatalogosMVC.Data/CatalogosMVC.Data.csproj" />
+    <Project Path="CatalogosMVC.Domain/CatalogosMVC.Domain.csproj" />
+    <Project Path="CatalogosMVC.Web/CatalogosMVC.Web.csproj" />
+  </Folder>
+</Solution>
