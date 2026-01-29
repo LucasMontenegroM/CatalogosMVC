@@ -23,6 +23,21 @@ public class UserRepository : IUserRepository
 
     public async Task Add(UserEntity user)
     {
-        return await _db.Users.AddAsync(user);
+        await _db.Users.AddAsync(user);
+    }
+
+    public async Task Commit()
+    {
+       await _db.SaveChangesAsync();
+    }
+
+    public async Task<UserEntity> GetById(int id)
+    {
+        return await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+    }
+
+    public void Delete(UserEntity user)
+    {
+        _db.Users.Remove(user);
     }
 }

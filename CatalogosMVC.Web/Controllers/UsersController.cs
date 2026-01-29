@@ -20,7 +20,7 @@ public class UsersController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> CreateUser()
+    public IActionResult CreateUser()
     {
         return View("CreateUser");
     }
@@ -30,6 +30,42 @@ public class UsersController : Controller
     public async Task<IActionResult> CreateUser(UserModel user)
     {
         await _userService.Add(user);
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+
+    public async Task<IActionResult> UpdateUser(int id)
+    {
+        var user = await _userService.GetById(id);
+        return View(user);
+    }
+
+    [HttpPost]
+
+   public async Task<IActionResult> UpdateUser(UserModel user)
+    {
+        if(user == null)
+        {
+            return View("UpdateUser");
+        }
+        await _userService.UpdateUser(user);
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+
+    public async Task<IActionResult> DeleteUser(int id)
+    {
+        var user = await _userService.GetById(id);
+        return View(user);
+    }
+
+    [HttpPost]
+
+    public async Task<IActionResult> DeleteUser(UserModel user)
+    {
+        await _userService.Delete(user);
         return RedirectToAction("Index");
     }
 }
