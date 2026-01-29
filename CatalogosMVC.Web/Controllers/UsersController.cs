@@ -38,6 +38,8 @@ public class UsersController : Controller
     public async Task<IActionResult> UpdateUser(int id)
     {
         var user = await _userService.GetById(id);
+        if (user == null)
+            return NotFound();
         return View(user);
     }
 

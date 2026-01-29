@@ -15,7 +15,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddDbContext<UserContext>(options =>
+builder.Services.AddDbContext<CatalogueContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });

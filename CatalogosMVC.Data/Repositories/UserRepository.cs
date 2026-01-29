@@ -8,9 +8,9 @@ namespace CatalogosMVC.Data.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly UserContext _db;
+    private readonly CatalogueContext _db;
 
-    public UserRepository(UserContext context)
+    public UserRepository(CatalogueContext context)
     {
         _db = context;
     }
