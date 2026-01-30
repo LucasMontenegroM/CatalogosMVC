@@ -11,4 +11,13 @@ public class ListEntity
     public string Image {  get; protected set; }
 
     public DateTime CreationTime { get; protected set; }
+
+    public ListEntity(int userId, string name, string image)
+    {
+        UserId = userId;
+        Name = name;
+        Image = image;
+        CreationTime = DateTime.Now;
+    }
+
 }

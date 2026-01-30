@@ -1,0 +1,28 @@
+﻿@using CatalogosMVC.Business.Models
+@model List<ListModel>
+    
+
+<div>
+    <a class="btn btn-success btn-success btn-lg mt-1 mb-3" asp-controller="Lists" asp-action="CreateList" asp-route-userId="@Model list.model.UserId">Novo Catálogo</a>
+</div>
+
+<div class="row">
+    @foreach (var list in Model)
+    {
+        
+        <div class="col-md-4 mb-4">
+
+
+
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title">@list.Name</h5>
+                    <p class="card-text">Opções do catálogo:</p>
+                   @*  <a asp-controller="Lists" asp-action="UpdateList" asp-route-id="@list.Id" class="btn btn-warning">Editar</a>
+                    <a asp-controller="Lists" asp-action="DeleteList" asp-route-id="@list.Id" class="btn btn-danger">Excluir</a> *@
+                </div>
+            </div>
+        </div>            
+        }
+</div>
+
