@@ -11,39 +11,29 @@
 
     <div class="mb-5 text-center ">
 
-        <h1 class="text-light">Cadastro de Perfil</h1>
+        <h1 class="text-light">Novo Item do Catálogo</h1>
 
     </div>
 
     <form method="post" asp-controller="Lists" asp-action="CreateList">
+
+        <input type="hidden" asp-for="UserId"/>
         <!--NOME-->
         <div class="mb-3">
-            <label for="Name" class="form-label text-light">Tarefa:</label>
-            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Digite o nome do Usuário :">
+            <label for="Name" class="form-label text-light">Nome:</label>
+            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Digite o nome do Item :">
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label for="Name" class="form-label text-light">Tarefa:</label>
-            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Digite o nome do Usuário :">
+        <!--Imagem--></>
+            <label for="Image" class="form-label text-light">Imagem:</label>
+            <input type="text" class="form-control" id="Image" asp-for="Image" placeholder="Inserir Imagem">
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        <div class="mb-3">
-            <label for="Name" class="form-label text-light">Tarefa:</label>
-            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Digite o nome do Usuário :">
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label for="Name" class="form-label text-light">Tarefa:</label>
-            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Digite o nome do Usuário :">
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-
+       
         <!--BOTÃO-->
         <div class="d-flex gap-5 mt-5">
-            <button type="submit" class="btn btn-success w-50">Adicionar <i class="bi bi-pen mx-2"></i> </button>
-            <a class="btn btn-primary w-50" asp-controller="Users" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
-
+            <button type="submit" class="btn btn-success w-50">Adicionar <i class="bi bi-pen mx-2"></i> </button
         </div>
-
     </form>
 </div>

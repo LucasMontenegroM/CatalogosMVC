@@ -23,18 +23,10 @@
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
-        <!--Image-->
-
-        <div class="mb-3">
-            <label for="Name" class="form-label text-light">Tarefa:</label>
-            <input type="text" class="form-control" id="Image" asp-for="Image" placeholder="Nomeie o item do catálogo :">
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-
         <!--BOTÃO-->
         <div class="d-flex gap-5 mt-5">
             <button type="submit" class="btn btn-success w-50">Adicionar <i class="bi bi-pen mx-2"></i> </button>
-            <a class="btn btn-primary w-50" asp-controller="Lists" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
+            <a class="btn btn-primary w-50" asp-controller="Users" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
 
         </div>
 

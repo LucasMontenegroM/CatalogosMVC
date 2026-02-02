@@ -3,7 +3,7 @@
     
 
 <div>
-    <a class="btn btn-success btn-success btn-lg mt-1 mb-3" asp-controller="Lists" asp-action="CreateList" asp-route-userId="@Model list.model.UserId">Novo Catálogo</a>
+    <a class="btn btn-success btn-success btn-lg mt-1 mb-3" asp-controller="Lists" asp-action="CreateList" asp-route-userId="@Model.First().UserId">Novo Catálogo</a>
 </div>
 
 <div class="row">

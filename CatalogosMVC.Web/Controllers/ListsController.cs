@@ -26,12 +26,14 @@ public class ListsController : Controller
 
     public IActionResult CreateList(int userId)
     {
-        return View("CreateList");
+        return View();
     }
 
-    public async Task<IActionResult> CreateList(ListModel list)
+    [HttpPost]
+    public async Task<IActionResult> CreateList(ListModel list, int userId)
     {
-        await _listService.AddList(list);
-        return RedirectToAction("CatalogueIndex");
+        await _listService.AddList(list, userId);
+
+        return RedirectToAction("CatalogueIndex", new {userId});
     }
 }
