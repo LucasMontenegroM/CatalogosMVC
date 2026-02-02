@@ -29,9 +29,9 @@ public class ListRepository : IListRepository
         return await _db.List.FirstOrDefaultAsync(l => l.Id == id);
     }
 
-    public void Delete(ListEntity user)
+    public void Delete(ListEntity list)
     {
-       _db.List.Remove(user);
+       _db.List.Remove(list);
     }
 
     public async Task Commit()

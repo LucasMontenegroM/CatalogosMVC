@@ -2,7 +2,6 @@
 using CatalogosMVC.Data.Repositories.Interfaces;
 using CatalogosMVC.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace CatalogosMVC.Data.Repositories;
 
@@ -37,7 +36,7 @@ public class UserRepository : IUserRepository
     }
 
     public void Delete(UserEntity user)
-    {
+    { 
         _db.Users.Remove(user);
     }
 }
