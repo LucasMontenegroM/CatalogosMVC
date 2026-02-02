@@ -1,8 +1,6 @@
 ﻿using CatalogosMVC.Business.Models;
 using CatalogosMVC.Business.Services.Interfaces;
-using CatalogosMVC.Data.Context;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace CatalogosMVC.Web.Controllers;
 
@@ -17,7 +15,7 @@ public class ListsController : Controller
     }
 
     public async Task<IActionResult> CatalogueIndex(int userId)
-    { 
+    {
         var ownedIds = await _listService.ListAllOwnedByUser(userId);
         return View(ownedIds);
     }
@@ -34,6 +32,47 @@ public class ListsController : Controller
     {
         await _listService.AddList(list, userId);
 
-        return RedirectToAction("CatalogueIndex", new {userId});
+        return RedirectToAction("CatalogueIndex", new { userId });
     }
+
+    [HttpGet]
+
+    public async Task<IActionResult> UpdateList(int id)
+    {
+
+        if (id > 0)
+        {
+            var list = await _listService.GetById(id);
+            return View(list);
+        }
+        return null;
+    }
+
+    [HttpPost]
+
+    public async Task<IActionResult> UpdateList(ListModel list)
+    {
+        await _listService.Update(list);
+        return RedirectToAction("CatalogueIndex", new { list.UserId });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DeleteList(int id)
+    {
+        if (id > 0)
+        {
+            var model = await _listService.GetById(id);
+            return View(model);
+        }
+        return null;
+    }
+
+    [HttpPost]
+
+    public async Task<IActionResult> DeleteList(ListModel list)
+    {
+        await _listService.Delete(list);
+        return RedirectToAction("CatalogueIndex", new { list.UserId });
+    }
+
 }

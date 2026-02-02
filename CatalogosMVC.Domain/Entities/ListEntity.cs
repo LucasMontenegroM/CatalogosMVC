@@ -19,5 +19,10 @@ public class ListEntity
         Image = image;
         CreationTime = DateTime.Now;
     }
+    public void Update(string name, string image)
+    {
+        Name = name;
+        Image = image;
+    }
 
 }

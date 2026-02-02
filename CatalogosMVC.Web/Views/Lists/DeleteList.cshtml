@@ -1,0 +1,42 @@
+﻿﻿@using CatalogosMVC.Business.Models
+@model ListModel
+
+
+@{
+    ViewData["Title"] = "Excluir do Catalogo";
+}
+
+
+<div class="container bg-dark p-5 rounded-5">
+
+    <div class="mb-5 text-center ">
+
+        <h1 class="text-light">Excluir do Catálogo</h1>
+
+    </div>
+
+    <form method="post" asp-controller="Lists" asp-action="DeleteList">
+
+        <input type="hidden" asp-for="UserId" />
+        <!--NOME-->
+        <div class="mb-3">
+            <label for="Name" class="form-label text-light">Nome:</label>
+            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Digite o nome do Item :" disabled>
+
+        </div>
+        <div class="mb-3">
+            <!--Imagem--></>
+            <label for="Image" class="form-label text-light">Imagem:</label>
+            <input type="text" class="form-control" id="Image" asp-for="Image" placeholder="Inserir Imagem" disabled>
+
+        </div>
+
+        <!--BOTÃO-->
+        <div class="d-flex gap-5 mt-5">
+            <button type="submit" class="btn btn-danger w-50">Excluir <i class="bi bi-pen mx-2"></i> </button>
+            <a asp-controller="Users" asp-action="Index" class="btn btn-primary w-50">
+                Voltar <i class="bi bi-arrow-left mx-2"></i>
+            </a>
+        </div>
+    </form>
+</div>

@@ -8,5 +8,9 @@ public interface IListRepository
 
     public Task Add(ListEntity list);
 
+    public Task<ListEntity> GetById(int id);
+
+    public void Delete(ListEntity user);
+
     public Task Commit();
 }

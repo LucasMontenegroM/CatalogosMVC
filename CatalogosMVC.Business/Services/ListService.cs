@@ -14,6 +14,16 @@ public class ListService : IListService
         _listRepository = listRepository;
     }
 
+    public async Task<ListModel> GetById(int id)
+    {
+        var entity = await _listRepository.GetById(id);
+        if (entity != null)
+        {
+            var model = ListModel.Map(entity);
+            return model;
+        }
+        return null;
+    }
     public async Task<List<ListModel>> ListAllOwnedByUser(int idUser)
     {
         var entity = await _listRepository.ListAllOwnedByUser(idUser);
@@ -38,5 +48,33 @@ public class ListService : IListService
             return true;
         }
         return false;
+    }
+
+    public async Task<bool> Update(ListModel list)
+    {
+        if (list != null)
+        {
+            ListEntity entity = await _listRepository.GetById(list.Id);
+
+            entity.Update(list.Name, list.Image);
+
+            await _listRepository.Commit();
+
+            return true;
+        }
+        return false;
+        
+    }
+
+    public async Task<bool> Delete(ListModel list)
+    {
+        if (list != null) {
+            var entity = await _listRepository.GetById(list.Id);
+            _listRepository.Delete(entity);
+            await _listRepository.Commit();
+            return true;
+        }
+        return false;
+
     }
 }

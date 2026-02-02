@@ -24,6 +24,16 @@ public class ListRepository : IListRepository
         await _db.List.AddAsync(list);
     }
 
+    public async Task<ListEntity> GetById(int id)
+    {
+        return await _db.List.FirstOrDefaultAsync(l => l.Id == id);
+    }
+
+    public void Delete(ListEntity user)
+    {
+       _db.List.Remove(user);
+    }
+
     public async Task Commit()
     {
         await _db.SaveChangesAsync();
