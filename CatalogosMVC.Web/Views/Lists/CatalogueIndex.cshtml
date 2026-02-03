@@ -28,9 +28,13 @@
 
 
                         <div class="card bg-dark text-white">
-                            <div class="card-body">
+                            <div row class="card-body">
+
+                                
                                 <h5 class="card-title">@list.Name</h5>
                                 <p class="card-text">Opções do catálogo:</p>
+                        <img src="/images/@list.Image" style="width: 30%; object-fit: cover; max-width: 100%; margin: 0 auto; min-width: 226px"/>
+                              //  <p>@list.CreationTime.ToString("dd/MM/yyyy")</p>
                                  <a asp-controller="Lists" asp-action="UpdateList" asp-route-id="@list.Id" class="btn btn-warning">Editar</a>
                                  <a asp-controller="Lists" asp-action="DeleteList" asp-route-id="@list.Id" class="btn btn-danger">Excluir</a>
                             </div>

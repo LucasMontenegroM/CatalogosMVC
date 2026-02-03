@@ -15,7 +15,7 @@
 
     </div>
 
-    <form method="post" asp-controller="Lists" asp-action="CreateList">
+    <form method="post" enctype="multipart/form-data" asp-controller="Lists" asp-action="CreateList">
 
         <input type="hidden" asp-for="UserId"/>
         <!--NOME-->
@@ -25,10 +25,11 @@
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="mb-3">
+
         <!--Imagem--></>
-            <label for="Image" class="form-label text-light">Imagem:</label>
-            <input type="text" class="form-control" id="Image" asp-for="Image" placeholder="Inserir Imagem">
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label class="form-label text-light">Imagem:</label>
+            <input class="form-control" type="file" name="Image" placeholder="Inserir Imagem">
+            
         </div>
        
         <!--BOTÃO-->

@@ -1,4 +1,5 @@
 ﻿using CatalogosMVC.Business.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace CatalogosMVC.Business.Services.Interfaces;
 
@@ -8,7 +9,7 @@ public interface IListService
 
     public Task<ListModel> GetById(int id);
 
-    public Task<bool> AddList(ListModel list, int userId);
+    public Task<bool> AddList(ListModel list, int userId, IFormFile image);
 
     public Task<bool> Update(ListModel list);
 

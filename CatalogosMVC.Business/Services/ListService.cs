@@ -2,6 +2,8 @@
 using CatalogosMVC.Business.Services.Interfaces;
 using CatalogosMVC.Data.Repositories.Interfaces;
 using CatalogosMVC.Domain.Entities;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace CatalogosMVC.Business.Services;
 
@@ -9,9 +11,12 @@ public class ListService : IListService
 {
     private readonly IListRepository _listRepository;
 
-    public ListService(IListRepository listRepository)
+    private readonly IWebHostEnvironment _webHostEnvironment;
+
+    public ListService(IListRepository listRepository, IWebHostEnvironment webHostEnvironment)
     {
         _listRepository = listRepository;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<ListModel> GetById(int id)
@@ -36,18 +41,28 @@ public class ListService : IListService
         else return null;
     }
 
-    public async Task<bool> AddList(ListModel list, int userId)
+    public async Task<bool> AddList(ListModel list, int userId , IFormFile image)
     {
+        var imageName = DateTime.Now.ToString("ddMMyyyyHHMMssfff" + image.Name + Path.GetExtension(image.FileName));
+
+        var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", imageName);
+
+        using (var save = new FileStream(path, FileMode.Create))
+        {
+            await image.CopyToAsync(save);
+        };
+
         if (list != null) {
             var entity = new ListEntity
                 (
                     userId,
                     list.Name,
-                    list.Image
+                    imageName
                 );
 
-            await _listRepository.Add(entity);
-            await _listRepository.Commit();
+           await _listRepository.Add(entity);
+           await _listRepository.Commit();
+
             return true;
         }
         return false;

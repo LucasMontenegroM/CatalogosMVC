@@ -1,6 +1,7 @@
 ﻿using CatalogosMVC.Business.Models;
 using CatalogosMVC.Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace CatalogosMVC.Web.Controllers;
 
@@ -31,9 +32,10 @@ public class ListsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateList(ListModel list, int userId)
+    public async Task<IActionResult> CreateList(ListModel list, int userId, IFormFile image)
     {
-        await _listService.AddList(list, userId);
+
+        await _listService.AddList(list, userId, image);
 
         return RedirectToAction("CatalogueIndex", new { userId });
     }
