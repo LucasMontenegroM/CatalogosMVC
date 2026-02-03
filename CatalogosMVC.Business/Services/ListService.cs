@@ -4,6 +4,7 @@ using CatalogosMVC.Data.Repositories.Interfaces;
 using CatalogosMVC.Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CatalogosMVC.Business.Services;
 
@@ -68,26 +69,49 @@ public class ListService : IListService
         return false;
     }
 
-    public async Task<bool> Update(ListModel list)
+    public async Task<bool> Update(ListModel list, IFormFile picture)
     {
         if (list != null)
         {
             ListEntity entity = await _listRepository.GetById(list.Id);
 
-            entity.Update(list.Name, list.Image);
+            if (list.Image != null)
+            {
+                var newFileName = DateTime.Now.ToString("yyyyMMddmmssfff" + picture.Name + Path.GetExtension(picture.FileName));
+
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", newFileName);
+
+                using (var save = new FileStream(path, FileMode.Create))
+                {
+                    await picture.CopyToAsync(save);
+                };
+
+                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", entity.Image);
+                System.IO.File.Delete(oldImagePath);
+
+                entity.UpdateImage(newFileName);
+            }
+
+            if(list.Name != null)
+            {
+                entity.UpdateName(list.Name);
+            }
 
             await _listRepository.Commit();
-
             return true;
         }
-        return false;
-        
+
+        return false;        
     }
 
     public async Task<bool> Delete(ListModel list)
     {
         if (list != null) {
             var entity = await _listRepository.GetById(list.Id);
+
+            string ImageFullPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", entity.Image);
+            System.IO.File.Delete(ImageFullPath);
+
             _listRepository.Delete(entity);
             await _listRepository.Commit();
             return true;

@@ -11,7 +11,7 @@ public interface IListService
 
     public Task<bool> AddList(ListModel list, int userId, IFormFile image);
 
-    public Task<bool> Update(ListModel list);
+    public Task<bool> Update(ListModel list, IFormFile picture);
 
     public Task<bool> Delete(ListModel list);
 }

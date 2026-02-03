@@ -55,9 +55,9 @@ public class ListsController : Controller
 
     [HttpPost]
 
-    public async Task<IActionResult> UpdateList(ListModel list)
+    public async Task<IActionResult> UpdateList(ListModel list, IFormFile picture)
     {
-        await _listService.Update(list);
+        await _listService.Update(list, picture);
         return RedirectToAction("CatalogueIndex", new { list.UserId });
     }
 
