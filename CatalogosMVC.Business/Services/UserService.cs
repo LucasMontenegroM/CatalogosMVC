@@ -2,7 +2,6 @@
 using CatalogosMVC.Business.Services.Interfaces;
 using CatalogosMVC.Data.Repositories.Interfaces;
 using CatalogosMVC.Domain.Entities;
-using System.Reflection.Metadata.Ecma335;
 
 namespace CatalogosMVC.Business.Services;
 

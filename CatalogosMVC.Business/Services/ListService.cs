@@ -27,10 +27,13 @@ public class ListService : IListService
     public async Task<List<ListModel>> ListAllOwnedByUser(int idUser)
     {
         var entity = await _listRepository.ListAllOwnedByUser(idUser);
-
-        return entity.Select(item =>{
-            return ListModel.Map(item);
-        }).ToList();
+        if (entity != null)
+        {
+            return entity.Select(item => {
+                return ListModel.Map(item);
+            }).ToList();
+        }
+        else return null;
     }
 
     public async Task<bool> AddList(ListModel list, int userId)

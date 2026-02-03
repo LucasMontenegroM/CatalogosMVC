@@ -16,9 +16,12 @@ public class ListsController : Controller
 
     public async Task<IActionResult> CatalogueIndex(int userId)
     {
+        ViewBag.UserId = userId;
+
         var ownedIds = await _listService.ListAllOwnedByUser(userId);
+        
         return View(ownedIds);
-    }
+    }   
 
     [HttpGet]
 
