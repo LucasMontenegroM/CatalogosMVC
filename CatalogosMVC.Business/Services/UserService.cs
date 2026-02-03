@@ -8,10 +8,11 @@ namespace CatalogosMVC.Business.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-
-    public UserService(IUserRepository userRepository)
+    private readonly IListRepository _listRepository;
+    public UserService(IUserRepository userRepository, IListRepository listRepository)
     {
         _userRepository = userRepository;
+        _listRepository = listRepository;
     }
 
     public async Task<List<UserModel>> ListAll()
@@ -67,6 +68,11 @@ public class UserService : IUserService
         var entity = await _userRepository.GetById(user.Id);
         if (entity != null)
         {
+            List<ListEntity> listsOfUser = await _listRepository.ListAllOwnedByUser(user.Id);
+            foreach(var list in  listsOfUser)
+            {
+                _listRepository.Delete(list);
+            }
             _userRepository.Delete(entity);
             await _userRepository.Commit();
             return true;
