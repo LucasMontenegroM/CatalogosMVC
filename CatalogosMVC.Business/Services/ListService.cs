@@ -75,9 +75,11 @@ public class ListService : IListService
         {
             ListEntity entity = await _listRepository.GetById(list.Id);
 
-            if (list.Image != null)
+            if (picture != null)
             {
-                var newFileName = DateTime.Now.ToString("yyyyMMddmmssfff" + picture.Name + Path.GetExtension(picture.FileName));
+                var extension = Path.GetExtension(picture.FileName);
+
+                var newFileName = $"{DateTime.Now:yyyyMMddmmssfff}{extension}";
 
                 var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", newFileName);
 

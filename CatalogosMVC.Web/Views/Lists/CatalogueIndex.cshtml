@@ -3,12 +3,12 @@
     
     @if (Model == null || !Model.Any())
     {
-        <h5>Nenhum elemento para exibir, Crie um novo item no catálogo</h5>  
-        //@using (Html.BeginForm("CreateList", "Lists", FormMethod.Get))
+        <h5>Nenhum elemento para exibir, Crie um novo item no catálogo</h5>
         
         <input type="hidden" name="UserId" value="userId" />
 
     <a class="btn btn-success btn-lg mt-1 mb-3" asp-controller="Lists" asp-action="CreateList" asp-route-userId="@ViewBag.UserId">Novo Catálogo</a>
+
     <a class="btn btn-primary btn-lg mt-1 mb-3" asp-controller="Users" asp-action="Index">Voltar</a>
     }
 
@@ -25,25 +25,33 @@
         
                     <div class="col-md-4 mb-4">
 
-
-
                         <div class="card bg-dark text-white">
-                            <div row class="card-body">
 
+                            <div row class="card-body">
                                 
                                 <h5 class="card-title">@list.Name</h5>
+
                                 <p class="card-text">Opções do catálogo:</p>
-                        <img src="/images/@list.Image" style="width: 30%; object-fit: cover; max-width: 100%; margin: 0 auto; min-width: 226px"/>
-                              //  <p>@list.CreationTime.ToString("dd/MM/yyyy")</p>
+
+                                <img src="/images/@list.Image" style="width: 20%;"/>
+
+                                <p>@list.CreationTime.ToString("dd/MM/yyyy")</p>
+
                                  <a asp-controller="Lists" asp-action="UpdateList" asp-route-id="@list.Id" class="btn btn-warning">Editar</a>
+
                                  <a asp-controller="Lists" asp-action="DeleteList" asp-route-id="@list.Id" class="btn btn-danger">Excluir</a>
                             </div>
+
                         </div>
+
                     </div>            
-                }        
+                 }        
     
             <div>
+
             <a class="btn btn-primary btn-lg mt-1 mb-3" asp-controller="Users" asp-action="Index">Voltar</a>
+
         </div>
+
         </div>
     }
