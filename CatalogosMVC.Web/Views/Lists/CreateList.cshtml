@@ -29,6 +29,7 @@
         <!--Imagem--></>
             <label class="form-label text-light">Imagem:</label>
             <input class="form-control" type="file" name="Image" placeholder="Inserir Imagem">
+            <span asp-validation-for="Image" class="text-danger"></span>
             
             
         </div>
@@ -41,3 +42,9 @@
         </div>
     </form>
 </div>
+@section Scripts{
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+}
