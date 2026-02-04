@@ -1,10 +1,14 @@
 ﻿using CatalogosMVC.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace CatalogosMVC.Business.Models;
 
 public class UserModel
 {
     public int Id { get; set; }
+
+
+    [Required(ErrorMessage = "Nome é um campo obrigatório.")]
     public string Name { get; set; }
 
     public static UserModel Map(UserEntity entity)

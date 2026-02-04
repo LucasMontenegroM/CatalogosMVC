@@ -1,4 +1,5 @@
 ﻿using CatalogosMVC.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace CatalogosMVC.Business.Models;
 
@@ -8,8 +9,11 @@ public class ListModel
 
     public int UserId { get; set; }
 
+    [Required(ErrorMessage="Nome é um campo obrigatório.")]
     public string Name { get; set; }
 
+
+    [Required(ErrorMessage = "Anexar uma imagem é obrigatório.")]
     public string Image { get; set; }
 
     public DateTime CreationTime { get; set; }

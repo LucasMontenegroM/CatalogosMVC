@@ -1,7 +1,6 @@
 ﻿using CatalogosMVC.Business.Models;
 using CatalogosMVC.Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
 
 namespace CatalogosMVC.Web.Controllers;
 
@@ -17,6 +16,9 @@ public class ListsController : Controller
 
     public async Task<IActionResult> CatalogueIndex(int userId)
     {
+
+        // check if user who owns the Id exists
+
         ViewBag.UserId = userId;
 
         var ownedIds = await _listService.ListAllOwnedByUser(userId);
@@ -28,56 +30,74 @@ public class ListsController : Controller
 
     public IActionResult CreateList(int userId)
     {
+        //check if there is an user whose id corresponds to userId
+
         return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateList(ListModel list, int userId, IFormFile image)
     {
+        var AbleToAdd = await _listService.AddList(list, userId, image);
 
-        await _listService.AddList(list, userId, image);
+        if (AbleToAdd)
+        {
+            return RedirectToAction("CatalogueIndex", new { userId });
+        }
 
-        return RedirectToAction("CatalogueIndex", new { userId });
+        return View();
     }
 
     [HttpGet]
 
     public async Task<IActionResult> UpdateList(int id)
     {
+        var list = await _listService.GetById(id);
 
-        if (id > 0)
+        if (id > 0 && list != null)
         {
-            var list = await _listService.GetById(id);
             return View(list);
         }
-        return null;
+
+        return NotFound();
     }
 
     [HttpPost]
 
     public async Task<IActionResult> UpdateList(ListModel list, IFormFile picture)
     {
-        await _listService.Update(list, picture);
-        return RedirectToAction("CatalogueIndex", new { list.UserId });
+        var ableToUpdate = await _listService.Update(list, picture);
+
+        if (ableToUpdate)
+        {        
+            return RedirectToAction("CatalogueIndex", new { list.UserId });
+        }
+
+        return View();
     }
 
     [HttpGet]
     public async Task<IActionResult> DeleteList(int id)
     {
-        if (id > 0)
+        var model = await _listService.GetById(id);
+
+        if (id > 0 && model != null)
         {
-            var model = await _listService.GetById(id);
             return View(model);
         }
-        return null;
+        return NotFound();
     }
 
     [HttpPost]
 
     public async Task<IActionResult> DeleteList(ListModel list)
     {
-        await _listService.Delete(list);
-        return RedirectToAction("CatalogueIndex", new { list.UserId });
+        var ableToDelete = await _listService.Delete(list);
+        if (ableToDelete)
+        {
+            return RedirectToAction("CatalogueIndex", new { list.UserId });
+        }
+        return View();
     }
 
 }

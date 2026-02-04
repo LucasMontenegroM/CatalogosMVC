@@ -4,7 +4,6 @@ using CatalogosMVC.Data.Repositories.Interfaces;
 using CatalogosMVC.Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CatalogosMVC.Business.Services;
 
@@ -17,43 +16,52 @@ public class ListService : IListService
     public ListService(IListRepository listRepository, IWebHostEnvironment webHostEnvironment)
     {
         _listRepository = listRepository;
+
         _webHostEnvironment = webHostEnvironment;
     }
-
     public async Task<ListModel> GetById(int id)
     {
         var entity = await _listRepository.GetById(id);
+
         if (entity != null)
         {
             var model = ListModel.Map(entity);
+
             return model;
         }
+
         return null;
     }
     public async Task<List<ListModel>> ListAllOwnedByUser(int idUser)
     {
         var entity = await _listRepository.ListAllOwnedByUser(idUser);
+
         if (entity != null)
         {
             return entity.Select(item => {
+
                 return ListModel.Map(item);
+
             }).ToList();
         }
         else return null;
     }
 
-    public async Task<bool> AddList(ListModel list, int userId , IFormFile image)
-    {
-        var imageName = DateTime.Now.ToString("ddMMyyyyHHMMssfff" + image.Name + Path.GetExtension(image.FileName));
-
-        var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", imageName);
-
-        using (var save = new FileStream(path, FileMode.Create))
+    public async Task<bool> AddList(ListModel list, int userId, IFormFile image)
+    { 
+        if (list.Name != null && userId != 0 && image != null)
         {
-            await image.CopyToAsync(save);
-        };
+            var extension = Path.GetExtension(image.FileName);
 
-        if (list != null) {
+            string imageName = $"{DateTime.Now:yyyyMMddmmssfff}{extension}";
+
+            var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", imageName);
+
+            using (var save = new FileStream(path, FileMode.Create))
+            {
+                await image.CopyToAsync(save);
+            };
+           
             var entity = new ListEntity
                 (
                     userId,
@@ -61,19 +69,27 @@ public class ListService : IListService
                     imageName
                 );
 
-           await _listRepository.Add(entity);
-           await _listRepository.Commit();
+            await _listRepository.Add(entity);
+
+            await _listRepository.Commit();
 
             return true;
+            
         }
+        
         return false;
     }
 
     public async Task<bool> Update(ListModel list, IFormFile picture)
     {
-        if (list != null)
+        ListEntity entity = await _listRepository.GetById(list.Id);
+
+        if (entity != null)
         {
-            ListEntity entity = await _listRepository.GetById(list.Id);
+            if (list.Name != null)
+            {
+                entity.UpdateName(list.Name);
+            }
 
             if (picture != null)
             {
@@ -89,14 +105,10 @@ public class ListService : IListService
                 };
 
                 var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", entity.Image);
-                System.IO.File.Delete(oldImagePath);
 
                 entity.UpdateImage(newFileName);
-            }
 
-            if(list.Name != null)
-            {
-                entity.UpdateName(list.Name);
+                System.IO.File.Delete(oldImagePath);
             }
 
             await _listRepository.Commit();
@@ -108,17 +120,21 @@ public class ListService : IListService
 
     public async Task<bool> Delete(ListModel list)
     {
-        if (list != null) {
+        if (list != null) 
+        {
             var entity = await _listRepository.GetById(list.Id);
 
             string ImageFullPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", entity.Image);
+
             System.IO.File.Delete(ImageFullPath);
 
             _listRepository.Delete(entity);
+
             await _listRepository.Commit();
+
             return true;
         }
-        return false;
 
+        return false;
     }
 }
