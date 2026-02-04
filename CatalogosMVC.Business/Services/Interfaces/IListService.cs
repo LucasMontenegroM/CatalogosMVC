@@ -9,6 +9,8 @@ public interface IListService
 
     public Task<ListModel> GetById(int id);
 
+    public Task<bool> GetCorrespondingUser(int userId);
+
     public Task<bool> AddList(ListModel list, int userId, IFormFile image);
 
     public Task<bool> Update(ListModel list, IFormFile picture);

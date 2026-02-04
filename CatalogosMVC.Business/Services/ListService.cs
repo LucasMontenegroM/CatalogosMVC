@@ -4,6 +4,7 @@ using CatalogosMVC.Data.Repositories.Interfaces;
 using CatalogosMVC.Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.Transactions;
 
 namespace CatalogosMVC.Business.Services;
 
@@ -11,13 +12,17 @@ public class ListService : IListService
 {
     private readonly IListRepository _listRepository;
 
+    private readonly IUserRepository _userRepository;
+
     private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public ListService(IListRepository listRepository, IWebHostEnvironment webHostEnvironment)
+    public ListService(IListRepository listRepository, IWebHostEnvironment webHostEnvironment, IUserRepository userRepository)
     {
         _listRepository = listRepository;
 
         _webHostEnvironment = webHostEnvironment;
+
+        _userRepository = userRepository;
     }
     public async Task<ListModel> GetById(int id)
     {
@@ -48,7 +53,7 @@ public class ListService : IListService
     }
 
     public async Task<bool> AddList(ListModel list, int userId, IFormFile image)
-    { 
+    {
         if (list.Name != null && userId != 0 && image != null)
         {
             var extension = Path.GetExtension(image.FileName);
@@ -61,7 +66,7 @@ public class ListService : IListService
             {
                 await image.CopyToAsync(save);
             };
-           
+
             var entity = new ListEntity
                 (
                     userId,
@@ -74,9 +79,9 @@ public class ListService : IListService
             await _listRepository.Commit();
 
             return true;
-            
+
         }
-        
+
         return false;
     }
 
@@ -115,12 +120,12 @@ public class ListService : IListService
             return true;
         }
 
-        return false;        
+        return false;
     }
 
     public async Task<bool> Delete(ListModel list)
     {
-        if (list != null) 
+        if (list != null)
         {
             var entity = await _listRepository.GetById(list.Id);
 
@@ -136,5 +141,17 @@ public class ListService : IListService
         }
 
         return false;
+    }
+
+    public async Task<bool> GetCorrespondingUser(int userId)
+    {
+        var user = await _userRepository.GetById(userId);
+
+        if(user == null)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

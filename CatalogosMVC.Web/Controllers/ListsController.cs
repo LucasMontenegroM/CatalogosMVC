@@ -17,22 +17,31 @@ public class ListsController : Controller
     public async Task<IActionResult> CatalogueIndex(int userId)
     {
 
-        // check if user who owns the Id exists
+        var userExists = await _listService.GetCorrespondingUser(userId);
 
-        ViewBag.UserId = userId;
+        if (userExists)
+        {
+            ViewBag.UserId = userId;
 
-        var ownedIds = await _listService.ListAllOwnedByUser(userId);
+            var ownedIds = await _listService.ListAllOwnedByUser(userId);
         
-        return View(ownedIds);
+            return View(ownedIds);            
+        }
+        return NotFound();
     }   
 
     [HttpGet]
 
-    public IActionResult CreateList(int userId)
+    public async Task<IActionResult> CreateList(int userId)
     {
-        //check if there is an user whose id corresponds to userId
+        var userExists = await _listService.GetCorrespondingUser(userId);
 
-        return View();
+        if (userExists) 
+        {
+            return View();
+        }
+        return NotFound();
+
     }
 
     [HttpPost]
