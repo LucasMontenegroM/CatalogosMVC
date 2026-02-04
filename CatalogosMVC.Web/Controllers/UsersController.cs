@@ -29,8 +29,14 @@ public class UsersController : Controller
 
     public async Task<IActionResult> CreateUser(UserModel user)
     {
-        await _userService.Add(user);
-        return RedirectToAction("Index");
+        var ableToAdd = await _userService.Add(user);
+
+        if (ableToAdd)
+        {
+            return RedirectToAction("Index");
+        }
+
+        return View();
     }
 
     [HttpGet]
@@ -38,8 +44,12 @@ public class UsersController : Controller
     public async Task<IActionResult> UpdateUser(int id)
     {
         var user = await _userService.GetById(id);
+
         if (user == null)
+        {
             return NotFound();
+        }
+
         return View(user);
     }
 
@@ -51,7 +61,9 @@ public class UsersController : Controller
         {
             return View("UpdateUser");
         }
+
         await _userService.UpdateUser(user);
+
         return RedirectToAction("Index");
     }
 
@@ -60,6 +72,12 @@ public class UsersController : Controller
     public async Task<IActionResult> DeleteUser(int id)
     {
         var user = await _userService.GetById(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
         return View(user);
     }
 
@@ -67,7 +85,12 @@ public class UsersController : Controller
 
     public async Task<IActionResult> DeleteUser(UserModel user)
     {
-        await _userService.Delete(user);
-        return RedirectToAction("Index");
+        var ableToDelete = await _userService.Delete(user);
+
+        if (!ableToDelete)
+        {
+            return NotFound();
+        }            
+            return RedirectToAction("Index");
     }
 }

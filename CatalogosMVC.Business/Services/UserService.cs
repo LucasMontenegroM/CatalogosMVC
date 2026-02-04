@@ -39,6 +39,11 @@ public class UserService : IUserService
 
     public async Task<UserModel> GetById(int id)
     {
+        if(id <= 0)
+        {
+            return null;
+        }
+
         var entity = await _userRepository.GetById(id);
         if (entity != null)
         {
