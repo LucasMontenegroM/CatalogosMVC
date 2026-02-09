@@ -41,7 +41,7 @@ public class UsersController : Controller
 
     [HttpGet]
 
-    public async Task<IActionResult> UpdateUser(int id)
+    public async Task<IActionResult> Update(int id)
     {
         var user = await _userService.GetById(id);
 
@@ -55,21 +55,21 @@ public class UsersController : Controller
 
     [HttpPost]
 
-   public async Task<IActionResult> UpdateUser(UserModel userModel)
+   public async Task<IActionResult> Update(UserModel userModel)
     {
         if(userModel == null)
         {
             return View("UpdateUser");
         }
 
-        await _userService.UpdateUser(userModel);
+        await _userService.Update(userModel);
 
         return RedirectToAction("Index");
     }
 
     [HttpGet]
 
-    public async Task<IActionResult> DeleteUser(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         var userModel = await _userService.GetById(id);
 
@@ -83,7 +83,7 @@ public class UsersController : Controller
 
     [HttpPost]
 
-    public async Task<IActionResult> DeleteUser(UserModel userModel)
+    public async Task<IActionResult> Delete(UserModel userModel)
     {
         var ableToDelete = await _userService.Delete(userModel);
 

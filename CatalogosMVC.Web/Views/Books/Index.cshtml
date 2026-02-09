@@ -37,6 +37,8 @@
 
                                 <p>@bookModel.CreationTime.ToString("dd/MM/yyyy")</p>
 
+                                <p>@bookModel.ReadingStatus</p>
+
                                  <a asp-controller="Books" asp-action="Update" asp-route-id="@bookModel.Id" class="btn btn-warning">Editar</a>
 
                                  <a asp-controller="Books" asp-action="Delete" asp-route-id="@bookModel.Id" class="btn btn-danger">Excluir</a>
