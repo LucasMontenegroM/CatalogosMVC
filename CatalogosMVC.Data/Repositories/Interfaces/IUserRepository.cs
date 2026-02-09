@@ -8,9 +8,9 @@ public interface IUserRepository
 
     public Task<UserEntity> GetById(int id);
 
-    public Task Add(UserEntity user);
+    public void Add(UserEntity userEntity);
 
-    public void Delete(UserEntity user);
+    public void Delete(UserEntity userEntity);
 
     public Task Commit();
 }

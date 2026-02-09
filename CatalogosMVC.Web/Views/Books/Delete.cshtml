@@ -1,5 +1,5 @@
 ﻿﻿@using CatalogosMVC.Business.Models
-@model ListModel
+@model BookModel
 
 
 @{
@@ -15,7 +15,7 @@
 
     </div>
 
-    <form method="post" asp-controller="Lists" asp-action="DeleteList">
+    <form method="post" asp-controller="Books" asp-action="Delete">
 
         <input type="hidden" asp-for="UserId" />
         <!--NOME-->

@@ -27,9 +27,9 @@ public class UsersController : Controller
 
     [HttpPost]
 
-    public async Task<IActionResult> CreateUser(UserModel user)
+    public async Task<IActionResult> Create(UserModel userModel)
     {
-        var ableToAdd = await _userService.Add(user);
+        var ableToAdd = await _userService.Add(userModel);
 
         if (ableToAdd)
         {
@@ -55,14 +55,14 @@ public class UsersController : Controller
 
     [HttpPost]
 
-   public async Task<IActionResult> UpdateUser(UserModel user)
+   public async Task<IActionResult> UpdateUser(UserModel userModel)
     {
-        if(user == null)
+        if(userModel == null)
         {
             return View("UpdateUser");
         }
 
-        await _userService.UpdateUser(user);
+        await _userService.UpdateUser(userModel);
 
         return RedirectToAction("Index");
     }
@@ -71,21 +71,21 @@ public class UsersController : Controller
 
     public async Task<IActionResult> DeleteUser(int id)
     {
-        var user = await _userService.GetById(id);
+        var userModel = await _userService.GetById(id);
 
-        if (user == null)
+        if (userModel == null)
         {
             return NotFound();
         }
 
-        return View(user);
+        return View(userModel);
     }
 
     [HttpPost]
 
-    public async Task<IActionResult> DeleteUser(UserModel user)
+    public async Task<IActionResult> DeleteUser(UserModel userModel)
     {
-        var ableToDelete = await _userService.Delete(user);
+        var ableToDelete = await _userService.Delete(userModel);
 
         if (!ableToDelete)
         {

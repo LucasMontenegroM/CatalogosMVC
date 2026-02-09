@@ -8,13 +8,16 @@ namespace CatalogosMVC.Business.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IListRepository _listRepository;
-    public UserService(IUserRepository userRepository, IListRepository listRepository)
+
+    private readonly IBookRepository _bookRepository;
+
+    public UserService(IUserRepository userRepository, IBookRepository bookRepository)
     {
         _userRepository = userRepository;
-        _listRepository = listRepository;
+        _bookRepository = bookRepository;
     }
 
+    //change this later
     public async Task<List<UserModel>> ListAll()
     {
         var usersEntity = await _userRepository.ListAll();
@@ -24,12 +27,14 @@ public class UserService : IUserService
         }).ToList();
         
     }
-    public async Task<bool> Add(UserModel user)
+    public async Task<bool> Add(UserModel userModel)
     {
-        UserEntity entity = new UserEntity(user.Name);
-        if (entity != null)
+        UserEntity userEntity = new UserEntity(userModel.Name);
+
+        if (userEntity != null)
         {
-            await _userRepository.Add(entity);
+            _userRepository.Add(userEntity);
+
             await _userRepository.Commit();
 
             return true;
@@ -44,22 +49,22 @@ public class UserService : IUserService
             return null;
         }
 
-        var entity = await _userRepository.GetById(id);
-        if (entity != null)
+        var userEntity = await _userRepository.GetById(id);
+        if (userEntity != null)
         {
-            var model = UserModel.Map(entity);
+            var model = UserModel.Map(userEntity);
             return model;
         }
         return null;
     }
 
-    public async Task<bool> UpdateUser(UserModel user)
+    public async Task<bool> Update(UserModel userModel)
     {
-        var entity = await _userRepository.GetById(user.Id);
+        var userEntity = await _userRepository.GetById(userModel.Id);
        
-        if(entity != null)
+        if(userEntity != null)
         {
-            entity.UpdateName(user.Name);
+            userEntity.UpdateName(userModel.Name);
 
             await _userRepository.Commit();
 
@@ -68,20 +73,26 @@ public class UserService : IUserService
         return false;
     }
 
-    public async Task<bool> Delete(UserModel user)
+    public async Task<bool> Delete(UserModel userModel)
     {
-        var entity = await _userRepository.GetById(user.Id);
-        if (entity != null)
+        var userEntity = await _userRepository.GetById(userModel.Id);
+
+        if (userEntity != null)
         {
-            List<ListEntity> listsOfUser = await _listRepository.ListAllOwnedByUser(user.Id);
-            foreach(var list in  listsOfUser)
+            List<BookEntity> listOfUsers = await _bookRepository.ListAllOwnedByUser(userModel.Id);
+
+            foreach(var bookEntity in listOfUsers)
             {
-                _listRepository.Delete(list);
+                _bookRepository.Delete(bookEntity);
             }
-            _userRepository.Delete(entity);
+
+            _userRepository.Delete(userEntity);
+
             await _userRepository.Commit();
+
             return true;
         }
+
         return false;
     }
 

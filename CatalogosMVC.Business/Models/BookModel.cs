@@ -1,9 +1,10 @@
 ﻿using CatalogosMVC.Domain.Entities;
+using CatalogosMVC.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace CatalogosMVC.Business.Models;
 
-public class ListModel
+public class BookModel
 {
     public int Id { get; set; }
 
@@ -18,19 +19,23 @@ public class ListModel
 
     public DateTime CreationTime { get; set; }
 
-    public static ListModel Map(ListEntity entity)
+    public ReadingStatus ReadingStatus { get; protected set; }
+
+    public static BookModel Map(BookEntity bookEntity)
     {
-        if (entity == null)
+        if (bookEntity == null)
         {
             return null;
         }
-        else return new ListModel
+
+        else return new BookModel
         {
-            Id = entity.Id,
-            UserId = entity.UserId,
-            Name = entity.Name,
-            Image = entity.Image,
-            CreationTime = entity.CreationTime,
+            Id = bookEntity.Id,
+            UserId = bookEntity.UserId,
+            Name = bookEntity.Name,
+            Image = bookEntity.Image,
+            CreationTime = bookEntity.CreationTime,
+            ReadingStatus = bookEntity.ReadingStatus
         };
     }
 }

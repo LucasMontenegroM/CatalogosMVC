@@ -7,8 +7,10 @@ public class UserModel
 {
     public int Id { get; set; }
 
-
     [Required(ErrorMessage = "Nome é um campo obrigatório.")]
+
+    [Range (1,50, ErrorMessage = "O nome deve ter menos de 50 caracteres.")]
+
     public string Name { get; set; }
 
     public static UserModel Map(UserEntity entity)
@@ -17,12 +19,11 @@ public class UserModel
         {
             return null;
         }
+
         else return new UserModel
         {
             Id = entity.Id,
             Name = entity.Name
         };
-
-    }
-    
+    }    
 }

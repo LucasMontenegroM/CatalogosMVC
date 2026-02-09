@@ -1,9 +1,9 @@
 ﻿﻿@using CatalogosMVC.Business.Models
-@model ListModel
+@model BookModel
 
 
 @{
-    ViewData["Title"] = "Atualizar no Catalogo";
+    ViewData["Title"] = "Adicionar no Catalogo";
 }
 
 
@@ -15,35 +15,38 @@
 
     </div>
 
-    <form method="post" enctype="multipart/form-data" asp-controller="Lists" asp-action="UpdateList">
+    <form method="post" enctype="multipart/form-data" asp-controller="Books" asp-action="Create">
 
-        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="UserId"/>
+
         <!--NOME-->
+
         <div class="mb-3">
             <label for="Name" class="form-label text-light">Nome:</label>
             <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Digite o nome do Item :">
-            
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="mb-3">
 
-            <!--Imagem--></>
+        <!--Imagem--></>
             <label class="form-label text-light">Imagem:</label>
-            <input class="form-control" type="file" name="picture" placeholder="Inserir Imagem">
-
+            <input class="form-control" type="file" name="Image" placeholder="Inserir Imagem">
+            <span asp-validation-for="Image" class="text-danger"></span>
+            
+            
         </div>
-
+       
         <!--BOTÃO-->
         <div class="d-flex gap-5 mt-5">
-            <button type="submit" class="btn btn-success w-50">Atualizar <i class="bi bi-pen mx-2"></i> </button>
+            <button type="submit" class="btn btn-success w-50">Adicionar <i class="bi bi-pen mx-2"></i> </button>
             <a asp-controller="Users" asp-action="Index" class="btn btn-primary w-50"> Voltar <i class="bi bi-arrow-left mx-2"></i>
             </a>
         </div>
     </form>
 </div>
+@section Scripts{
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 
-@* @section Scripts{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
-} *@
+}

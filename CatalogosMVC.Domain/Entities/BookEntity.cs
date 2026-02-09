@@ -1,6 +1,8 @@
-﻿namespace CatalogosMVC.Domain.Entities;
+﻿using CatalogosMVC.Domain.Enums;
 
-public class ListEntity
+namespace CatalogosMVC.Domain.Entities;
+
+public class BookEntity
 {
     public int Id { get; private set; }
 
@@ -12,7 +14,9 @@ public class ListEntity
 
     public DateTime CreationTime { get; protected set; }
 
-    public ListEntity(int userId, string name, string image)
+    public ReadingStatus ReadingStatus { get; protected set; }
+
+    public BookEntity(int userId, string name, string image)
     {
         UserId = userId;
         Name = name;

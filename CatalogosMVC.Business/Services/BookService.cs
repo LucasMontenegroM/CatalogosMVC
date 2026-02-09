@@ -4,57 +4,56 @@ using CatalogosMVC.Data.Repositories.Interfaces;
 using CatalogosMVC.Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using System.Transactions;
 
 namespace CatalogosMVC.Business.Services;
 
-public class ListService : IListService
+public class BookService : IBookService
 {
-    private readonly IListRepository _listRepository;
+    private readonly IBookRepository _bookRepository;
 
     private readonly IUserRepository _userRepository;
 
     private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public ListService(IListRepository listRepository, IWebHostEnvironment webHostEnvironment, IUserRepository userRepository)
+    public BookService(IBookRepository bookRepository, IWebHostEnvironment webHostEnvironment, IUserRepository userRepository)
     {
-        _listRepository = listRepository;
+        _bookRepository = bookRepository;
 
         _webHostEnvironment = webHostEnvironment;
 
         _userRepository = userRepository;
     }
-    public async Task<ListModel> GetById(int id)
+    public async Task<BookModel> GetById(int id)
     {
-        var entity = await _listRepository.GetById(id);
+        var entity = await _bookRepository.GetById(id);
 
         if (entity != null)
         {
-            var model = ListModel.Map(entity);
+            var model = BookModel.Map(entity);
 
             return model;
         }
 
         return null;
     }
-    public async Task<List<ListModel>> ListAllOwnedByUser(int idUser)
+    public async Task<List<BookModel>> ListAllOwnedByUser(int idUser)
     {
-        var entity = await _listRepository.ListAllOwnedByUser(idUser);
+        var entity = await _bookRepository.ListAllOwnedByUser(idUser);
 
         if (entity != null)
         {
             return entity.Select(item => {
 
-                return ListModel.Map(item);
+                return BookModel.Map(item);
 
             }).ToList();
         }
         else return null;
     }
 
-    public async Task<bool> AddList(ListModel list, int userId, IFormFile image)
+    public async Task<bool> Add(BookModel bookModel, int userId, IFormFile image)
     {
-        if (list.Name != null && userId != 0 && image != null)
+        if (bookModel.Name != null && userId != 0 && image != null)
         {
             var extension = Path.GetExtension(image.FileName);
 
@@ -67,16 +66,16 @@ public class ListService : IListService
                 await image.CopyToAsync(save);
             };
 
-            var entity = new ListEntity
+            var entity = new BookEntity
                 (
                     userId,
-                    list.Name,
+                    bookModel.Name,
                     imageName
                 );
 
-            await _listRepository.Add(entity);
+            await _bookRepository.Add(entity);
 
-            await _listRepository.Commit();
+            await _bookRepository.Commit();
 
             return true;
 
@@ -85,15 +84,15 @@ public class ListService : IListService
         return false;
     }
 
-    public async Task<bool> Update(ListModel list, IFormFile picture)
+    public async Task<bool> Update(BookModel book, IFormFile picture)
     {
-        ListEntity entity = await _listRepository.GetById(list.Id);
+        BookEntity entity = await _bookRepository.GetById(book.Id);
 
         if (entity != null)
         {
-            if (list.Name != null)
+            if (book.Name != null)
             {
-                entity.UpdateName(list.Name);
+                entity.UpdateName(book.Name);
             }
 
             if (picture != null)
@@ -116,26 +115,26 @@ public class ListService : IListService
                 System.IO.File.Delete(oldImagePath);
             }
 
-            await _listRepository.Commit();
+            await _bookRepository.Commit();
             return true;
         }
 
         return false;
     }
 
-    public async Task<bool> Delete(ListModel list)
+    public async Task<bool> Delete(BookModel book)
     {
-        if (list != null)
+        if (book != null)
         {
-            var entity = await _listRepository.GetById(list.Id);
+            var entity = await _bookRepository.GetById(book.Id);
 
             string ImageFullPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", entity.Image);
 
             System.IO.File.Delete(ImageFullPath);
 
-            _listRepository.Delete(entity);
+            _bookRepository.Delete(entity);
 
-            await _listRepository.Commit();
+            await _bookRepository.Commit();
 
             return true;
         }
@@ -147,7 +146,7 @@ public class ListService : IListService
     {
         var user = await _userRepository.GetById(userId);
 
-        if(user == null)
+         if(user == null)
         {
             return false;
         }

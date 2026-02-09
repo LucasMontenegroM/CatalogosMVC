@@ -7,5 +7,5 @@ public class CatalogueContext : DbContext
 {
     public CatalogueContext(DbContextOptions options) : base(options) { }
     public DbSet<UserEntity> Users { get; set; }
-    public DbSet<ListEntity> List { get; set; }
+    public DbSet<BookEntity> Books { get; set; }
 }

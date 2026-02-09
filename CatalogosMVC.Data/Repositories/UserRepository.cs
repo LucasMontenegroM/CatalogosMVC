@@ -20,9 +20,9 @@ public class UserRepository : IUserRepository
 
     }
 
-    public async Task Add(UserEntity user)
+    public void Add(UserEntity user)
     {
-        await _db.Users.AddAsync(user);
+        _db.Users.AddAsync(user);
     }
 
     public async Task Commit()

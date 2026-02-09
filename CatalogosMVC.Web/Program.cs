@@ -15,9 +15,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddScoped<IListRepository, ListRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 
-builder.Services.AddScoped<IListService, ListService>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 builder.Services.AddDbContext<CatalogueContext>(options =>
 {
