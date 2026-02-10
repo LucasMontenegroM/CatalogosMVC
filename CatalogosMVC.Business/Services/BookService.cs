@@ -28,16 +28,23 @@ public class BookService : IBookService
     {
         var extension = Path.GetExtension(image.FileName);
 
-        string imageName = $"{DateTime.Now:yyyyMMddmmssfff}{extension}";
+        List<string> allowedExtensions = [".jpeg", ".png", ".webp"];
 
-        var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", imageName);
-
-        using (var save = new FileStream(path, FileMode.Create))
+        if (allowedExtensions.Contains(extension))
         {
-            await image.CopyToAsync(save);
+            string imageName = $"{DateTime.Now:yyyyMMddmmssfff}{extension}";
+
+            var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", imageName);
+
+            using (var save = new FileStream(path, FileMode.Create))
+            {
+                await image.CopyToAsync(save);
+            }
+
+            return imageName;
         }
 
-        return imageName;
+        return null;        
     }
 
     public async Task<BookModel> GetById(int id)
@@ -59,6 +66,7 @@ public class BookService : IBookService
 
         if (entity != null)
         {
+            //change
             return entity.Select(item => {
 
                 return BookModel.Map(item);
@@ -70,9 +78,14 @@ public class BookService : IBookService
 
     public async Task<bool> Add(BookModel bookModel, int userId, IFormFile image)
     {
-        if (bookModel.Name != null && userId != 0 && image != null)
+        if (!string.IsNullOrWhiteSpace(bookModel.Name) && userId != 0 && image != null)
         {
             var imageName = await GetImageInfo(image);
+
+            if (imageName == null) 
+            {
+                return false;
+            }
 
             var bookEntity = new BookEntity
                 (
@@ -99,43 +112,41 @@ public class BookService : IBookService
 
         if (bookEntity != null)
         {
-            if (bookModel.Name != null)
+            if (!string.IsNullOrWhiteSpace(bookModel.Name))
             {
                 bookEntity.UpdateName(bookModel.Name);
             }
 
             if (picture != null)
             {
-                var extension = Path.GetExtension(picture.FileName);
-
                 var newFileName = await GetImageInfo(picture);
+
+                bookEntity.UpdateImage(newFileName);
 
                 var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", bookEntity.Image);
 
                 System.IO.File.Delete(oldImagePath);
-                
-                bookEntity.UpdateImage(newFileName);
-
             }
 
             await _bookRepository.Commit();
+
             return true;
         }
 
         return false;
     }
 
-    public async Task<bool> Delete(BookModel book)
+    public async Task<bool> Delete(BookModel bookModel)
     {
-        if (book != null)
+        if (bookModel != null)
         {
-            var entity = await _bookRepository.GetById(book.Id);
+            var bookEntity = await _bookRepository.GetById(bookModel.Id);
 
-            string ImageFullPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", entity.Image);
+            string ImageFullPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", bookEntity.Image);
 
             System.IO.File.Delete(ImageFullPath);
 
-            _bookRepository.Delete(entity);
+            _bookRepository.Delete(bookEntity);
 
             await _bookRepository.Commit();
 
@@ -147,9 +158,9 @@ public class BookService : IBookService
 
     public async Task<bool> GetCorrespondingUser(int userId)
     {
-        var user = await _userRepository.GetById(userId);
+        var userEntity = await _userRepository.GetById(userId);
 
-         if(user == null)
+        if(userEntity == null)
         {
             return false;
         }

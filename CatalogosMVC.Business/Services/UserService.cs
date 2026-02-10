@@ -31,7 +31,7 @@ public class UserService : IUserService
     {
         UserEntity userEntity = new UserEntity(userModel.Name);
 
-        if (userEntity != null)
+        if (userEntity != null && !string.IsNullOrWhiteSpace(userModel.Name))
         {
             _userRepository.Add(userEntity);
 
@@ -61,8 +61,8 @@ public class UserService : IUserService
     public async Task<bool> Update(UserModel userModel)
     {
         var userEntity = await _userRepository.GetById(userModel.Id);
-       
-        if(userEntity != null)
+
+        if (userEntity != null && !string.IsNullOrWhiteSpace(userModel.Name))
         {
             userEntity.UpdateName(userModel.Name);
 
@@ -77,7 +77,7 @@ public class UserService : IUserService
     {
         var userEntity = await _userRepository.GetById(userModel.Id);
 
-        if (userEntity != null)
+        if (userEntity != null && !string.IsNullOrWhiteSpace(userModel.Name))
         {
             List<BookEntity> listOfUsers = await _bookRepository.ListAllOwnedByUser(userModel.Id);
 

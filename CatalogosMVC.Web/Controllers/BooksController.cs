@@ -46,6 +46,7 @@ public class BooksController : Controller
     }
 
     [HttpPost]
+
     public async Task<IActionResult> Create(BookModel bookModel, int userId, IFormFile image)
     {
         var AbleToAdd = await _bookService.Add(bookModel, userId, image);
@@ -87,6 +88,7 @@ public class BooksController : Controller
     }
 
     [HttpGet]
+
     public async Task<IActionResult> Delete(int id)
     {
         var model = await _bookService.GetById(id);

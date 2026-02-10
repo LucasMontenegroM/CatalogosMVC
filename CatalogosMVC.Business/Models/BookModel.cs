@@ -13,7 +13,7 @@ public class BookModel
     public string Name { get; set; }
 
 
-    [Required(ErrorMessage = "Anexar uma imagem é obrigatório.")]
+    [Required(ErrorMessage = "Anexar uma imagem do tipo jpeg, png ou webp é obrigatório.")]
     public string Image { get; set; }
 
     public DateTime CreationTime { get; set; }
