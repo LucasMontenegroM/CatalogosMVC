@@ -14,13 +14,14 @@ public class BookEntity
 
     public DateTime CreationTime { get; protected set; }
 
-    public ReadingStatus ReadingStatus { get; protected set; }
+    public int ReadingStatus { get; protected set; }
 
-    public BookEntity(int userId, string name, string image)
+    public BookEntity(int userId, string name, string image, int readingStatus)
     {
         UserId = userId;
         Name = name;
         Image = image;
+        ReadingStatus = readingStatus;
         CreationTime = DateTime.Now;
     }
     public void UpdateName(string name)

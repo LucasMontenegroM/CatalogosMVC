@@ -23,6 +23,23 @@ public class BookService : IBookService
 
         _userRepository = userRepository;
     }
+
+    private async Task<string> GetImageInfo(IFormFile image)
+    {
+        var extension = Path.GetExtension(image.FileName);
+
+        string imageName = $"{DateTime.Now:yyyyMMddmmssfff}{extension}";
+
+        var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", imageName);
+
+        using (var save = new FileStream(path, FileMode.Create))
+        {
+            await image.CopyToAsync(save);
+        }
+
+        return imageName;
+    }
+
     public async Task<BookModel> GetById(int id)
     {
         var entity = await _bookRepository.GetById(id);
@@ -55,25 +72,17 @@ public class BookService : IBookService
     {
         if (bookModel.Name != null && userId != 0 && image != null)
         {
-            var extension = Path.GetExtension(image.FileName);
+            var imageName = await GetImageInfo(image);
 
-            string imageName = $"{DateTime.Now:yyyyMMddmmssfff}{extension}";
-
-            var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", imageName);
-
-            using (var save = new FileStream(path, FileMode.Create))
-            {
-                await image.CopyToAsync(save);
-            };
-
-            var entity = new BookEntity
+            var bookEntity = new BookEntity
                 (
                     userId,
                     bookModel.Name,
-                    imageName
+                    imageName,
+                    bookModel.ReadingStatus
                 );
 
-            await _bookRepository.Add(entity);
+            await _bookRepository.Add(bookEntity);
 
             await _bookRepository.Commit();
 
@@ -84,35 +93,29 @@ public class BookService : IBookService
         return false;
     }
 
-    public async Task<bool> Update(BookModel book, IFormFile picture)
+    public async Task<bool> Update(BookModel bookModel, IFormFile picture)
     {
-        BookEntity entity = await _bookRepository.GetById(book.Id);
+        BookEntity bookEntity = await _bookRepository.GetById(bookModel.Id);
 
-        if (entity != null)
+        if (bookEntity != null)
         {
-            if (book.Name != null)
+            if (bookModel.Name != null)
             {
-                entity.UpdateName(book.Name);
+                bookEntity.UpdateName(bookModel.Name);
             }
 
             if (picture != null)
             {
                 var extension = Path.GetExtension(picture.FileName);
 
-                var newFileName = $"{DateTime.Now:yyyyMMddmmssfff}{extension}";
+                var newFileName = await GetImageInfo(picture);
 
-                var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", newFileName);
-
-                using (var save = new FileStream(path, FileMode.Create))
-                {
-                    await picture.CopyToAsync(save);
-                };
-
-                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", entity.Image);
-
-                entity.UpdateImage(newFileName);
+                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", bookEntity.Image);
 
                 System.IO.File.Delete(oldImagePath);
+                
+                bookEntity.UpdateImage(newFileName);
+
             }
 
             await _bookRepository.Commit();

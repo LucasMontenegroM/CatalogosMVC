@@ -9,7 +9,7 @@ public class UserModel
 
     [Required(ErrorMessage = "Nome é um campo obrigatório.")]
 
-    [Range (1,50, ErrorMessage = "O nome deve ter menos de 50 caracteres.")]
+    [StringLength(50, ErrorMessage = "O nome deve ter menos de 50 caracteres.")]
 
     public string Name { get; set; }
 

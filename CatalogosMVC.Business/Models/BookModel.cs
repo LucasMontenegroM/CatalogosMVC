@@ -1,5 +1,4 @@
 ﻿using CatalogosMVC.Domain.Entities;
-using CatalogosMVC.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace CatalogosMVC.Business.Models;
@@ -19,7 +18,7 @@ public class BookModel
 
     public DateTime CreationTime { get; set; }
 
-    public ReadingStatus ReadingStatus { get; protected set; }
+    public int ReadingStatus { get; set; }
 
     public static BookModel Map(BookEntity bookEntity)
     {

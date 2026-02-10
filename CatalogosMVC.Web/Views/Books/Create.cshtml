@@ -28,7 +28,8 @@
         </div>
         <div class="mb-3">
 
-        <!--Imagem--></>
+        <!--Imagem-->
+
             <label class="form-label text-light">Imagem:</label>
             <input class="form-control" type="file" name="Image" placeholder="Inserir Imagem">
             <span asp-validation-for="Image" class="text-danger"></span>
@@ -36,12 +37,15 @@
             
         </div>
 
+        <!--Status-->
+
         <div class="mb-3">
-            <label for="ReadingStatus" class="form-label text-light">Status da leitura:</label>
-            <select name="ReadingStatus" id="ReadingStatus">
+            <label asp-for="ReadingStatus" class="form-label text-light">Status da leitura:</label>
+            <select asp-for="ReadingStatus" class="form-select">
+                <option value="">-- Selecione --</option>
+                <option value="0">Não Lido</option>
                 <option value="1">Lendo</option>
                 <option value="2">Lido</option>
-                <option value="0">Não Lido</option>
             </select>
         </div>
        

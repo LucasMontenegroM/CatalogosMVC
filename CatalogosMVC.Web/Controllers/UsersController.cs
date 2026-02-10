@@ -20,9 +20,9 @@ public class UsersController : Controller
     }
 
     [HttpGet]
-    public IActionResult CreateUser()
+    public IActionResult Create()
     {
-        return View("CreateUser");
+        return View("Create");
     }
 
     [HttpPost]

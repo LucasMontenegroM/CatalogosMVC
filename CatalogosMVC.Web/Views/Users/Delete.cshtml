@@ -3,7 +3,7 @@
 
 
 @{
-    ViewData["Title"] = "Atualizar Usuario";
+    ViewData["Title"] = "Apagar Usuario";
 }
 
 
@@ -11,25 +11,25 @@
 
     <div class="mb-5 text-center ">
 
-        <h1 class="text-light">Atualização de Usuário</h1>
+        <h1 class="text-light">Exclusão de Usuário</h1>
 
     </div>
 
-    <form method="post" asp-controller="Users" asp-action="UpdateUser">
+    <form method="post" asp-controller="Users" asp-action="Delete">
 
         <input type="hidden" asp-for="Id" />
 
         <!--NOME-->
         <div class="mb-3">
             <label for="Name" class="form-label text-light">Nome:</label>
-            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Qual o nome do Usuário :">
+            <input type="text" class="form-control" id="Name" asp-for="Name" placeholder="Qual o nome do Usuário :" disabled>
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
-        
+
         <!--BOTÃO-->
         <div class="d-flex gap-5 mt-5">
-            <button type="submit" class="btn btn-success w-50">Atualizar <i class="bi bi-pen mx-2"></i> </button>
+            <button type="submit" class="btn btn-danger w-50">Apagar <i class="bi bi-pen mx-2"></i> </button>
             <a class="btn btn-primary w-50" asp-controller="Users" asp-action="Index">Voltar <i class="bi bi-arrow-return-left" mx-2></i></a>
 
         </div>
@@ -37,8 +37,7 @@
 
     </form>
 </div>
-
-@section Scripts{
+@section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
