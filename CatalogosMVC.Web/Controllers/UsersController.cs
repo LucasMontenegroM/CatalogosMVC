@@ -43,28 +43,33 @@ public class UsersController : Controller
 
     public async Task<IActionResult> Update(int id)
     {
-        var user = await _userService.GetById(id);
-
-        if (user == null)
+        if (id > 0)
         {
-            return NotFound();
+            var userModel = await _userService.GetById(id);
+
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(userModel);
         }
 
-        return View(user);
+        return NotFound();
     }
 
     [HttpPost]
 
    public async Task<IActionResult> Update(UserModel userModel)
     {
-        if(userModel == null)
+        if(!string.IsNullOrWhiteSpace(userModel.Name))
         {
-            return View("UpdateUser");
+            await _userService.Update(userModel);
+
+            return RedirectToAction();
         }
 
-        await _userService.Update(userModel);
-
-        return RedirectToAction("Index");
+        return View();
     }
 
     [HttpGet]
@@ -91,6 +96,7 @@ public class UsersController : Controller
         {
             return NotFound();
         }            
-            return RedirectToAction("Index");
+            
+        return RedirectToAction("Index");
     }
 }

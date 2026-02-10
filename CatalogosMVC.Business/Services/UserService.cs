@@ -77,7 +77,7 @@ public class UserService : IUserService
     {
         var userEntity = await _userRepository.GetById(userModel.Id);
 
-        if (userEntity != null && !string.IsNullOrWhiteSpace(userModel.Name))
+        if (userEntity != null)
         {
             List<BookEntity> listOfUsers = await _bookRepository.ListAllOwnedByUser(userModel.Id);
 

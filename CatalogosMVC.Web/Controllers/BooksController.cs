@@ -65,7 +65,7 @@ public class BooksController : Controller
     {
         var bookModel = await _bookService.GetById(id);
 
-        if (id > 0 && bookModel != null)
+        if (id > 0 || bookModel != null)
         {
             return View(bookModel);
         }
